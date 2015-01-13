@@ -3,13 +3,12 @@
 
 A lightweight script helps you to deploy your server via web hooks.
 
-- **Contributors**: [Yuan Chong](http://chon.io/)
 - **License**: [GNU General Public License, version 2](http://www.gnu.org/licenses/gpl-2.0.html)
 
 ## Requirements
 
-- Python 2.7+
-- web.py 0.3+
+- [Python](https://www.python.org/) 2.7+
+- [web.py](http://webpy.org/) 0.3+
 
 ## Quick Start
 
@@ -28,5 +27,5 @@ The sample configuration can be found in `/config-sample.json`
 
 ---
 
-Copyright &copy; 2015 Yuan Chong
+Copyright &copy; 2015 [Yuan Chong](http://chon.io/)
 
