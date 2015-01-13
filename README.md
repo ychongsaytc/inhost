@@ -1,10 +1,10 @@
 
 # Inhost
 
-A lightweight script helps you deploy your server via web hooks.
+A lightweight script helps you to deploy your server via web hooks.
 
-- Contributors: [**Yuan Chong**](http://chon.io/)
-- License: [**GNU General Public License, version 2**](http://www.gnu.org/licenses/gpl-2.0.html)
+- **Contributors**: [Yuan Chong](http://chon.io/)
+- **License**: [GNU General Public License, version 2](http://www.gnu.org/licenses/gpl-2.0.html)
 
 ## Requirements
 
@@ -16,6 +16,7 @@ A lightweight script helps you deploy your server via web hooks.
 1. Download the latest Inhost
 2. Make your configuration for Inhost
 3. Run `python service-start.py`
+4. Visit `http://your-host:your-port/your-secret/the-command-set-id/` to process the deployment
 
 ## Configuration
 
