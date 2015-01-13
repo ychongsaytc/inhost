@@ -18,15 +18,15 @@ urls = (
 class index:
 
 	def GET ( self ) :
-		return '<h1>It works!</h1>'
+		return '<a href="https://github.com/ychongsaytc/inhost">Inhost</a> is installed on the server, which is a lightweight script that helps you to deploy you web server via web hooks.'
 
 
 class deploy:
 
-	def GET ( self, the_hash, the_command ) :
+	def GET ( self, the_secret, the_command ) :
 		config = core.get_config()
 		# secret incorrect
-		if the_hash != config['url_secret'] :
+		if the_secret != config['url_secret'] :
 			return 'Access denied.'
 		# command set does not exist
 		if the_command not in config['commands'].keys() :
@@ -64,6 +64,9 @@ class deploy:
 				core.write_log( '[Inhost] Send mail error: ' + str( sys.exc_info()[1] ), False )
 			core.write_log( '[Inhost] Command result has been sent to ' + str( mail_receiver ), False )
 		return 'Done.'
+
+	def POST ( self, the_secret, the_command ) :
+		return self.GET( the_secret, the_command )
 
 
 class web_app ( web.application ) :
