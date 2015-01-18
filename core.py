@@ -14,7 +14,7 @@ def get_config() :
 	elif os.path.isfile( 'config-smaple.json' ) :
 		stream = open( 'config-smaple.json' )
 	else :
-		write_log( '[Inhost] Configuration file does not exist.' )
+		print '[Inhost] Configuration file does not exist.'
 		return
 	the_conf = json.load( stream )
 	return the_conf
