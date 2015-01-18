@@ -46,9 +46,9 @@ def send_email( mail_receiver, mail_subject, mail_message ) :
 			mail_message
 		] )
 	if config['email']['smtp_ssl'] :
-		s = smtplib.SMTP_SSL()
+		s = smtplib.SMTP_SSL( None, None, None, None, None, 60 );
 	else :
-		s = smtplib.SMTP()
+		s = smtplib.SMTP( None, None, None, 60 );
 	s.connect( config['email']['smtp_host'], config['email']['smtp_port'] )
 	s.login( config['email']['smtp_user'], config['email']['smtp_pass'] )
 	s.sendmail( mail_sender, mail_receiver, mail_message )
