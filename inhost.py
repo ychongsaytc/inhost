@@ -60,9 +60,9 @@ class deploy:
 			core.write_log( '[Inhost] Sending command result email to ' + str( mail_receiver ) + ' ...', False )
 			try:
 				core.send_email( mail_receiver, 'The command has been processed', mail_message )
+				core.write_log( '[Inhost] Command result has been sent to ' + str( mail_receiver ), False )
 			except:
 				core.write_log( '[Inhost] Send mail error: ' + str( sys.exc_info()[1] ), False )
-			core.write_log( '[Inhost] Command result has been sent to ' + str( mail_receiver ), False )
 		return 'Done.'
 
 	def POST ( self, the_secret, the_command ) :
