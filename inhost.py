@@ -38,12 +38,13 @@ class deploy:
 		command_set = config['commands'][the_command]
 		command = command_set['command']
 		proc_status = 'Successful'
+		time_start = time.time()
 		# run command and save output
 		proc = subprocess.Popen( command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, preexec_fn=os.setsid )
 		core.write_log( '[Inhost] Runing command "' + command + '" with PID: ' + str( proc.pid ) + ' ...' )
-		# set up timer
+		# set up timer for timeout
 		timeout = command_set['timeout']
-		def timer() :
+		def timer_timeout() :
 			core.write_log( '[Inhost] Waiting for ' + str( timeout ) + ' seconds ...' )
 			time.sleep( timeout )
 			if None == proc.poll() :
@@ -51,10 +52,11 @@ class deploy:
 				# kill the command process group
 				os.killpg( os.getpgid( proc.pid ), signal.SIGQUIT )
 				proc_status = 'Timeout'
-		thread = threading.Thread( target=timer )
+		thread = threading.Thread( target=timer_timeout )
 		thread.start()
 		# wait for process end then retrieve output
 		proc_out, proc_err = proc.communicate()
+		time_elapsed = time.time() - time_start
 		# filter illegal unicode characters
 		proc_out = unicode( proc_out, encoding='ascii', errors='ignore' )
 		# write output to log
@@ -66,11 +68,11 @@ class deploy:
 				mail_receiver = [ mail_receiver ]
 			mail_subject = 'The command has been processed'
 			mail_message = ''.join( [
-					'<h3>Detials</h3>',
+					'<h3>Result: ' + proc_status + '</h3>',
+					'<p><strong>Time elapsed:</strong></p>',
+					'<pre>' + ( '%.2f' % time_elapsed ) + ' second(s)</pre>',
 					'<p><strong>Command:</strong></p>',
 					'<pre><code>' + command + '</code></pre>',
-					'<p><strong>Status:</strong></p>',
-					'<pre><code>' + proc_status + '</code></pre>',
 					'<p><strong>Output:</strong></p>',
 					'<pre><code>' + proc_out + '</code></pre>',
 				] )
