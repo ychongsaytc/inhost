@@ -1,9 +1,9 @@
 {
-	"pid_file": "/var/run/inhost.pid",
-	"log_file": "/var/log/inhost.log",
 	"http_host": "0.0.0.0",
 	"http_port": 8787,
 	"url_secret": "FILL_WITH_YOUR_SECRET_HASH_HERE",
+	"pid_file": "/var/run/inhost.pid",
+	"log_file": "/var/log/inhost.log",
 	"mail_setup": {
 		"smtp_host": "localhost",
 		"smtp_port": 25,

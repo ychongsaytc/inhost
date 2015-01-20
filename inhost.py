@@ -14,6 +14,7 @@ import core
 
 config = core.get_config()
 
+
 urls = (
 	'/', 'index',
 	'/(\S+?)/(\S+?)/?', 'deploy',
@@ -43,17 +44,18 @@ class deploy:
 		proc = subprocess.Popen( command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, preexec_fn=os.setsid )
 		core.write_log( '[Inhost] Runing command "' + command + '" with PID: ' + str( proc.pid ) + ' ...' )
 		# set up timer for timeout
-		timeout = command_set['timeout']
-		def timer_timeout() :
-			core.write_log( '[Inhost] Waiting for ' + str( timeout ) + ' seconds ...' )
-			time.sleep( timeout )
-			if None == proc.poll() :
-				core.write_log( '[Inhost] Time out, terminating ...' )
-				# kill the command process group
-				os.killpg( os.getpgid( proc.pid ), signal.SIGQUIT )
-				proc_status = 'Timeout'
-		thread = threading.Thread( target=timer_timeout )
-		thread.start()
+		if 'timeout' in command_set.keys() and command_set['timeout'] :
+			timeout = command_set['timeout']
+			def timer_timeout() :
+				core.write_log( '[Inhost] Waiting for ' + str( timeout ) + ' seconds ...' )
+				time.sleep( timeout )
+				if None == proc.poll() :
+					core.write_log( '[Inhost] Time out, terminating ...' )
+					# kill the command process group
+					os.killpg( os.getpgid( proc.pid ), signal.SIGQUIT )
+					proc_status = 'Timeout'
+			thread = threading.Thread( target=timer_timeout )
+			thread.start()
 		# wait for process end then retrieve output
 		proc_out, proc_err = proc.communicate()
 		time_elapsed = time.time() - time_start
@@ -62,19 +64,19 @@ class deploy:
 		# write output to log
 		core.write_log( '[Inhost] Command output:\n' + proc_out )
 		# send output as notice email
-		if command_set['mail_notice'] :
+		if 'mail_notice' in command_set.keys() and command_set['mail_notice'] :
 			mail_receiver = command_set['mail_notice']
 			if type('') == type( mail_receiver ) :
 				mail_receiver = [ mail_receiver ]
 			mail_subject = 'The command has been processed'
 			mail_message = ''.join( [
 					'<h3>Result: ' + proc_status + '</h3>',
-					'<p><strong>Time elapsed:</strong></p>',
-					'<pre>' + ( '%.2f' % time_elapsed ) + ' second(s)</pre>',
 					'<p><strong>Command:</strong></p>',
 					'<pre><code>' + command + '</code></pre>',
 					'<p><strong>Output:</strong></p>',
 					'<pre><code>' + proc_out + '</code></pre>',
+					'<p><strong>Time elapsed:</strong></p>',
+					'<pre>' + ( '%.2f' % time_elapsed ) + ' second(s)</pre>',
 				] )
 			core.write_log( '[Inhost] Sending command result email to ' + ', '.join( mail_receiver ) + ' ...' )
 			try:
