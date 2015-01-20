@@ -8,14 +8,13 @@ import signal
 import core
 
 
-core.write_log( '[Inhost] Stopping Inhost ...' )
-
 config = core.get_config()
 
 if None != config :
+	core.write_log( '[Inhost] Stopping Inhost ...', True )
 	if not os.path.isfile( config['pid_file'] ) :
 		# pid file does not exist
-		core.write_log( '[Inhost] Inhost not started.' )
+		core.write_log( '[Inhost] Inhost not started.', True )
 	else :
 		# get pid from temporarily file
 		with open( config['pid_file'], 'r' ) as the_file :
@@ -28,8 +27,8 @@ if None != config :
 			# ... and its child processes
 			os.killpg( int( pgid ), signal.SIGQUIT )
 		except:
-			core.write_log( '[Inhost] Error: ' + str( sys.exc_info()[1] ) )
+			core.write_log( '[Inhost] Error: ' + str( sys.exc_info()[1] ), True )
 		# remove temporarily file
 		os.remove( config['pid_file'] )
-		core.write_log( '[Inhost] OK.' )
+		core.write_log( '[Inhost] OK.', True )
 
