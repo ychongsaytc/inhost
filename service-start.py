@@ -7,11 +7,10 @@ import subprocess
 import core
 
 
-core.write_log( '[Inhost] Staring Inhost ...' )
-
 config = core.get_config()
 
 if None != config :
+	core.write_log( '[Inhost] Staring Inhost ...' )
 	if os.path.isfile( config['pid_file'] ) :
 		# pid file already exists
 		core.write_log( '[Inhost] Inhost has been started already.' )
@@ -22,7 +21,7 @@ if None != config :
 			# open `/dev/null` as stream
 			FNULL = open( os.devnull, 'w' )
 			# run Inhost web server process via shell
-			proc = subprocess.Popen( 'python inhost.py', stdout=FNULL, stderr=FNULL, shell=True )
+			proc = subprocess.Popen( 'python ' + os.path.dirname( os.path.abspath( __file__ ) ) + '/inhost.py', stdout=FNULL, stderr=FNULL, shell=True )
 		except:
 			core.write_log( '[Inhost] Error: ' + str( sys.exc_info()[1] ) )
 		# write pid
