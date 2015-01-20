@@ -4,8 +4,7 @@
 	"http_host": "0.0.0.0",
 	"http_port": 8787,
 	"url_secret": "FILL_WITH_YOUR_SECRET_HASH_HERE",
-	"email": {
-		"receiver": [ "webmaster@example.com" ],
+	"mail_setup": {
 		"smtp_host": "localhost",
 		"smtp_port": 25,
 		"smtp_user": "mail",
@@ -15,11 +14,13 @@
 	"commands": {
 		"deploy_www": {
 			"command": "cd /var/www/html && git pull",
-			"email_notice": true
+			"timeout": 300,
+			"mail_notice": [ "developer@example.com" ]
 		},
 		"update_system": {
 			"command": "yum -y update",
-			"email_notice": true
+			"timeout": 600,
+			"mail_notice": [ "webmaster@example.com" ]
 		}
 	}
 }
